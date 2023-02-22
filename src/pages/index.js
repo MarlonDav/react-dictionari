@@ -1,6 +1,24 @@
 import Head from 'next/head'
-
-export default function Home() {
+import { API_URL } from '@/utils/CONST.js'
+import { useState } from 'react'
+export default function Home () {
+  console.log(API_URL)
+  const [value, setValue] = useState('')
+  const [result, setResult] = useState({})
+  const handledSearch = () => {
+    fetch('/api/hello', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ value })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setResult(result)
+      })
+  }
   return (
     <>
       <Head>
@@ -10,7 +28,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>main</h1>
+        <h1>Diccionario</h1>
+        <input placeholder="Enter to word"
+        onChange={(e) => {
+          setValue(e.target.value)
+        }}/>
+        <button onClick={() => handledSearch()}>
+            Buscar
+        </button>
+        {
+          JSON.stringify(result)
+        }
+        
       </main>
     </>
   )

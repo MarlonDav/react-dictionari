@@ -1,5 +1,15 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+const BASE_URL = process.env.BASE_URL
 
-export default function handler(req, res) {
-  res.status(200).json({ name: 'John Doe' })
+export default async function handler (req, res) {
+  console.log(req.body)
+  const { value } = req.body
+
+  const response = await fetch(`${BASE_URL}/${value}`)
+    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      return res
+    })
+  res.status(200).json(response)
 }
